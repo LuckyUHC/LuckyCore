@@ -106,7 +106,7 @@ public class DropsManager implements Listener {
                     for (Entity et : e.getPlayer().getWorld().getEntities()) {
                         if (et instanceof Item) {
                             Item it = (Item) et;
-                            if (it.getItemStack().getType() == Material.SAPLING
+                            if (it.getItemStack().getType().name().contains("SAPPLING")
                                     || it.getItemStack().getType() == Material.APPLE) {
                                 it.setItemStack(new ItemStack(Material.GOLDEN_APPLE));
                             }

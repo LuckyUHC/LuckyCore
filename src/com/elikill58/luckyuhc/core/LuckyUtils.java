@@ -36,6 +36,7 @@ public class LuckyUtils {
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static ItemStack createSkull(String name, int amount, String owner, String... lore) {
 		ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 		SkullMeta skullmeta = (SkullMeta) skull.getItemMeta();

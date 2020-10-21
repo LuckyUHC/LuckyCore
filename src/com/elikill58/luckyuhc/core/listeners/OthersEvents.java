@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.elikill58.api.PlayerData;
 import com.elikill58.api.game.GameAPI;
 import com.elikill58.luckyuhc.core.LuckyCore;
 import com.elikill58.luckyuhc.core.phases.LobbyPhase;
@@ -42,7 +41,6 @@ public class OthersEvents implements Listener {
 	public void onCmd(PlayerCommandPreprocessEvent e) {
 		String cmd = e.getMessage();
 		Player p = e.getPlayer();
-		PlayerData pi = PlayerData.getPlayerData(p);
 		if (!p.isOp())
 			return;
 		if(cmd.startsWith("/forcestart")) {

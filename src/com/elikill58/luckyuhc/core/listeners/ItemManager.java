@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elikill58.luckyuhc.core.LuckyCore;
 
+@SuppressWarnings("deprecation")
 public class ItemManager implements Listener {
 	
 	@EventHandler

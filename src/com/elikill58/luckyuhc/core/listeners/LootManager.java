@@ -130,6 +130,7 @@ public class LootManager implements Listener {
 			this.b = b;
 		}
 
+		@SuppressWarnings("deprecation")
 		public ItemStack toItem() {
 			if (b != -1)
 				if (name != null)

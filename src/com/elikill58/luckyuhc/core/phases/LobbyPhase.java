@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 
-import com.elikill58.api.PlayerData;
 import com.elikill58.api.game.GameAPI;
 import com.elikill58.api.game.phase.Phase;
 import com.elikill58.api.game.phase.PhaseTimer;
@@ -61,7 +60,6 @@ public class LobbyPhase extends Phase {
 		event.setQuitMessage("");
 		
 		Player player = event.getPlayer();
-		PlayerData playerData = PlayerData.getPlayerData(player);
         GameAPI.broadcast("leave_message",
                 "%playername%", player.getName(),
                 "%playercount%", String.valueOf(Bukkit.getOnlinePlayers().size() - 1),

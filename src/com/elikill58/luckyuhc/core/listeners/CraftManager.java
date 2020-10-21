@@ -44,7 +44,7 @@ public class CraftManager implements Listener {
 				e.setCancelled(true);
 				e.getPlayer().sendMessage(ChatColor.GREEN + "Enchantement désactivé.");
 			} else
-				e.getInventory().setItem(1, new ItemStack(Material.INK_SACK, 64, (short) 4));
+				e.getInventory().setItem(1, new ItemStack(Material.LAPIS_LAZULI, 64));
 		}
 	}
 
@@ -57,7 +57,7 @@ public class CraftManager implements Listener {
 	@EventHandler
 	public void inventoryClickEvent(EnchantItemEvent e) {
 		if((e.getInventory() instanceof EnchantingInventory) && LuckyCore.properties.enchantEnabled)
-			e.getInventory().setItem(1, new ItemStack(Material.INK_SACK, 64, (short) 4));
+			e.getInventory().setItem(1, new ItemStack(Material.LAPIS_LAZULI, 64));
 	}
 
 	@EventHandler
@@ -97,6 +97,7 @@ public class CraftManager implements Listener {
 			this.b = b;
 		}
 
+		@SuppressWarnings("deprecation")
 		public ItemStack toItem() {
 			if(m == null)
 				return null;
