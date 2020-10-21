@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import com.elikill58.api.Materials;
 import com.elikill58.api.utils.PacketUtils;
 import com.elikill58.api.utils.Utils;
 import com.elikill58.luckyuhc.core.listeners.OthersEvents;
@@ -38,7 +39,7 @@ public class LuckyUtils {
 
 	@SuppressWarnings("deprecation")
 	public static ItemStack createSkull(String name, int amount, String owner, String... lore) {
-		ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+		ItemStack skull = new ItemStack(Materials.SKULL_ITEM, 1, (byte) 3);
 		SkullMeta skullmeta = (SkullMeta) skull.getItemMeta();
 		skullmeta.setDisplayName(Utils.applyColorCodes(name));
 		skullmeta.setOwner(owner);

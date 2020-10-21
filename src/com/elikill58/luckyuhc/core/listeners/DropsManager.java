@@ -23,7 +23,9 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.elikill58.api.Materials;
 import com.elikill58.api.game.GameAPI;
+import com.elikill58.api.utils.ItemUtils;
 import com.elikill58.luckyblocks.LuckyBlocks;
 import com.elikill58.luckyuhc.core.LuckyCore;
 import com.elikill58.luckyuhc.core.LuckyUtils;
@@ -144,9 +146,9 @@ public class DropsManager implements Listener {
                     for (offZ = -range; offZ <= range; offZ++) {
                         Material mat = world.getBlockAt(x + offX, y + offY, z + offZ).getType();
                         if (mat.name().contains("LEAVES"))
-                            type = Material.LEAVES.getId();
+                            type = ItemUtils.getMaterialWithCompatibility("LEAVES", "ACACIA_LEAVES").getId();
                         else if (mat.name().contains("LOG"))
-                            type = Material.LOG.getId();
+                            type = ItemUtils.getMaterialWithCompatibility("LOG", "ACACIA_LOG").getId();
                         blocks[(offX + div) * mul + (offY + div) * max + offZ
                                 + div] = ((mat.name().contains("LOG")) ? 0
                                 : ((mat.name().contains("LEAVES")) ? -2 : -1));
@@ -187,7 +189,7 @@ public class DropsManager implements Listener {
             block.breakNaturally();
 
             if (10 > new Random().nextInt(100)) {
-                world.playEffect(block.getLocation(), Effect.STEP_SOUND, Material.LEAVES.getId());
+                world.playEffect(block.getLocation(), Effect.STEP_SOUND, ItemUtils.getMaterialWithCompatibility("LEAVES", "ACACIA_LEAVES").getId());
             }
         }
     }
@@ -237,7 +239,7 @@ public class DropsManager implements Listener {
 		Block b = e.getBlock();
 		Material m = b.getType();
 		Player p = e.getPlayer();
-		if (m.equals(Material.ENCHANTMENT_TABLE)) {
+		if (m.equals(Materials.ENCHANT_TABLE)) {
 			LOC_BIBLIO.add(b.getLocation().clone());
 			int nb = LuckyCore.properties.lvlBiblio;
 			for (int i = 0; i != nb; i++)

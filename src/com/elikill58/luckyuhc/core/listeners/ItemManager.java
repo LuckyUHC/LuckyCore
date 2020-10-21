@@ -116,7 +116,16 @@ public class ItemManager implements Listener {
 	private ArrayList<Material> getItemToDeleteOver64() {
 		ArrayList<Material> m = new ArrayList<>();
 		m.add(Material.TORCH);
-		m.add(Material.COOKED_BEEF);
+		for(Material all : Material.values()) {
+			String name = all.name();
+			if(name.startsWith("LEGACY_")) // don't use legacy items
+				continue;
+			if(name.contains("COOKED_") || name.contains("RAW_"))
+				m.add(all);
+			else if(name.contains("MUTTON") || name.contains("PORK") || name.contains("FISH"))
+				m.add(all);
+		}
+		/*m.add(Material.COOKED_BEEF);
 		m.add(Material.RAW_BEEF);
 		m.add(Material.COOKED_CHICKEN);
 		m.add(Material.RAW_CHICKEN);
@@ -130,7 +139,7 @@ public class ItemManager implements Listener {
 		m.add(Material.CARROT_ITEM);
 		m.add(Material.WORKBENCH);
 		m.add(Material.GRILLED_PORK);
-		m.add(Material.PORK);
+		m.add(Material.PORK);*/
 		return m;
 	}
 }
