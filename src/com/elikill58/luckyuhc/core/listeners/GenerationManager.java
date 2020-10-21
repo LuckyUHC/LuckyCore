@@ -36,7 +36,7 @@ public class GenerationManager implements Listener {
 		private static Generation[] GENERATIONS = new Generation[] { new Generation(55, Material.PRISMARINE, 400, 22),
 				new Generation(20, Material.DIAMOND_ORE, 45, 6), new Generation(55, Material.COAL_ORE, 80, 20),
 				new Generation(25, Material.REDSTONE_ORE, 45), new Generation(40, Material.IRON_ORE, 60, 15),
-				new Generation(25, Material.QUARTZ, 45), new Generation(25, Material.EMERALD_ORE, 40, 6),
+				new Generation(25, Material.NETHER_QUARTZ_ORE, 45), new Generation(25, Material.EMERALD_ORE, 40, 6),
 				new Generation(25, Material.OBSIDIAN, 60, 4) };
 
 		@Override
