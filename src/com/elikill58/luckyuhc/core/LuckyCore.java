@@ -90,7 +90,9 @@ public class LuckyCore {
 		} catch (Exception ignore) {}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void onEnable() {
+		((Game<LuckyUHCProperties>) GameAPI.ACTIVE_GAME).properties = properties;
 		properties.maxPlayers(20).maxSpecs(20);
 		GAME_PROVIDER.getDataFolder().mkdirs();
 		try (InputStream in = GAME_PROVIDER.getResource("Lobby.schematic");
