@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
 import com.elikill58.api.game.GameProperties;
-import com.elikill58.api.game.phase.Phase;
 
 public class LuckyUHCProperties extends GameProperties {
 	
@@ -95,15 +94,6 @@ public class LuckyUHCProperties extends GameProperties {
 
 	public LuckyUHCProperties timeBeforeTp(int i){
 		this.timeBeforeTp = i;
-		return this;
-	}
-
-	public Phase fightPhase() {
-		return LuckyCore.FIGHT;
-	}
-	
-	public LuckyUHCProperties fightPhase(Phase phase) {
-		LuckyCore.FIGHT = phase;
 		return this;
 	}
 	

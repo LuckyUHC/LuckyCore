@@ -49,10 +49,7 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 @SuppressWarnings("deprecation")
 public class LuckyCore {
 
-	public static Game<?> game;
 	public static LuckyUHCProperties properties = new LuckyUHCProperties();
-	public static LuckyCore INSTANCE;
-	public static Phase FIGHT;
 	public static HashMap<Player, Integer> FOUND = new HashMap<>();
 	public static final List<Location> FARMING_LOCS = new ArrayList<>(), FIGHT_LOCS = new ArrayList<>();
 
@@ -165,7 +162,7 @@ public class LuckyCore {
 	}*/
 
 	public static void configure(Game<?> gameClass, Phase lobbyPhase) {
-		(LuckyCore.game = gameClass).properties.canDrop(true).canModifyInventories(true)
+		gameClass.properties.canDrop(true).canModifyInventories(true)
 				.disableNaturalSpawning(false).disableFallDamages(true).pvp(false);
 	}
 
@@ -183,13 +180,13 @@ public class LuckyCore {
 				PlayerData.getPlayerData(p).addCoins(20);
 		}
 		for (Player p : winner) {
-			Messages.sendMessage(p, "game.end.split", "%prefix%", game.prefix());
+			Messages.sendMessage(p, "game.end.split", "%prefix%", GameAPI.ACTIVE_GAME.prefix());
 			p.sendMessage("");
 			if (!properties.winCoins)
 				Messages.sendMessage(p, "game.end.earn_off");
 			Messages.sendMessage(p, "game.end.win_by", "%name%", winnersName);
 			p.sendMessage("");
-			Messages.sendMessage(p, "game.end.split", "%prefix%", game.prefix());
+			Messages.sendMessage(p, "game.end.split", "%prefix%", GameAPI.ACTIVE_GAME.prefix());
 		}
 		Bukkit.getScheduler().runTaskLater(GAME_PROVIDER, new BukkitRunnable() {
 			@Override

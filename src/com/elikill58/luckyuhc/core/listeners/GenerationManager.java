@@ -14,7 +14,6 @@ import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.generator.BlockPopulator;
 
 import com.elikill58.api.game.GameAPI;
-import com.elikill58.luckyuhc.core.LuckyCore;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
@@ -152,8 +151,6 @@ public class GenerationManager implements Listener {
 	public static class LobbyPopulator extends BlockPopulator {
 
 		public String SchematicName = "Lobby.schematic";
-
-		public LuckyCore pl = LuckyCore.INSTANCE;
 
 		@Override
 		public void populate(World world, Random random, Chunk chunk) {
