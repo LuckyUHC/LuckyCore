@@ -12,10 +12,11 @@ import org.bukkit.potion.PotionEffect;
 import com.elikill58.api.PlayerData;
 import com.elikill58.api.game.GameAPI;
 import com.elikill58.api.game.phase.Phase;
+import com.elikill58.api.game.phase.PhaseTimer;
 import com.elikill58.api.scoreboard.ObjectiveSign;
 import com.elikill58.luckyuhc.core.LuckyCore;
 
-@SuppressWarnings("deprecated")
+@SuppressWarnings("deprecation")
 public class LobbyPhase extends Phase {
 
 	public static PhaseTimer timer = PhaseTimer.builder()
@@ -36,7 +37,6 @@ public class LobbyPhase extends Phase {
 		event.setJoinMessage("");
 		
 		Player player = event.getPlayer();
-		PlayerData playerData = PlayerData.getPlayerData(player);
 		GameAPI.broadcast("join_message",
                 "%playername%", player.getName(),
                 "%playercount%", String.valueOf(Bukkit.getOnlinePlayers().size()),

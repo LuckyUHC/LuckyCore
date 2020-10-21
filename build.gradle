@@ -31,7 +31,7 @@ repositories {
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
     maven {
-    	url = "https://jitpack.io"
+    	url = "https://www.jitpack.io"
     }
     maven {
     	url = "http://maven.enginehub.org/repo/"
@@ -43,6 +43,7 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.0.0-SNAPSHOT'
+    compileOnly 'com.sk89q.worldedit:worldedit-core:6.0.0-SNAPSHOT'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8

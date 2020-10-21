@@ -21,7 +21,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
 import com.elikill58.api.Messages;
 import com.elikill58.api.PlayerData;
@@ -42,6 +41,7 @@ import com.elikill58.luckyuhc.core.listeners.PickManager;
 import com.google.common.io.ByteStreams;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 
 @SuppressWarnings("deprecation")
