@@ -1,5 +1,0 @@
-name: LuckyCore
-main: com.elikill58.luckyuhc.core.LuckyCore
-version: 1.0
-author: Elikill58 & RedNesto
-depend: [WorldEdit]

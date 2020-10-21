@@ -9,12 +9,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.elikill58.api.Materials;
+import com.elikill58.api.game.GameAPI;
 import com.elikill58.api.utils.PacketUtils;
 import com.elikill58.api.utils.Utils;
 import com.elikill58.luckyuhc.core.listeners.OthersEvents;
@@ -30,10 +30,6 @@ public class LuckyUtils {
 	}
 
 	public static ItemStack createItem(Material m, String name, int quantite, byte byt, String... lore){
-		return null;
-	}
-	
-	public static ItemStack createItem(Material m, String name, int quantite, Enchantment enchant, int lvl, String... lore){
 		return null;
 	}
 
@@ -77,7 +73,7 @@ public class LuckyUtils {
 	public static void respawnInstant(final Player player) {
 		OthersEvents.CONTENT.put(player.getName() + "-content", player.getInventory().getContents());
 		OthersEvents.CONTENT.put(player.getName() + "-armorcontent", player.getInventory().getArmorContents());
-        Bukkit.getScheduler().runTaskLater(LuckyCore.INSTANCE, () -> {
+        Bukkit.getScheduler().runTaskLater(GameAPI.GAME_PROVIDER, () -> {
         	try {
 	        	Class<?> packetClass = PacketUtils.getNmsClass("PacketPlayInClientCommand");
 	        	Class<?> enumClientClass = packetClass.getDeclaredClasses()[0];

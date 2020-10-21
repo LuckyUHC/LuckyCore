@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +17,6 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.elikill58.api.game.GameAPI;
 import com.elikill58.luckyuhc.core.LuckyCore;
-import com.elikill58.luckyuhc.core.phases.LobbyPhase;
 
 public class OthersEvents implements Listener {
 
@@ -43,15 +41,7 @@ public class OthersEvents implements Listener {
 		Player p = e.getPlayer();
 		if (!p.isOp())
 			return;
-		if(cmd.startsWith("/forcestart")) {
-			e.setCancelled(true);
-			if(GameAPI.ACTIVE_PHASE.id.equals("lobby") && !LobbyPhase.timer.isRunning()) {
-				LobbyPhase.timer.start();
-				p.sendMessage(LuckyCore.game.prefix() + ChatColor.GREEN + " Démarrage forcé.");
-			} else {
-				p.sendMessage(LuckyCore.game.prefix() + ChatColor.RED + " Déjà démarré.");
-			}
-		} else if (!cmd.startsWith("/revive"))
+		if (!cmd.startsWith("/revive"))
 			return;
 		e.setCancelled(true);
 		String[] arg = e.getMessage().split(" ");

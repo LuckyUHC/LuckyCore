@@ -29,12 +29,11 @@ import com.elikill58.api.utils.ItemUtils;
 import com.elikill58.luckyblocks.LuckyBlocks;
 import com.elikill58.luckyuhc.core.LuckyCore;
 import com.elikill58.luckyuhc.core.LuckyUtils;
-import com.elikill58.luckyuhc.core.phases.FarmingPhase;
 
 public class DropsManager implements Listener {
 
 	private static final HashMap<Material, Drops> DROPS = new HashMap<>();
-	public static final List<Location> LOC_BIBLIO = new ArrayList<>();
+	private static final List<Location> LOC_BIBLIO = new ArrayList<>();
 	public static boolean isFirst = false;
 	
 	public static void addDrop(Material m, Drops drop) {
@@ -50,7 +49,7 @@ public class DropsManager implements Listener {
 	public void onBreak(BlockBreakEvent e) {
 		Block b = e.getBlock();
 		Material m = b.getType();
-		if(GameAPI.ACTIVE_PHASE.equals(LuckyCore.game.startingPhase()) && !FarmingPhase.timer.isRunning()) {
+		if(GameAPI.ACTIVE_PHASE.id.equals("fight")) {
 			e.setCancelled(true);
 			return;
 		}
@@ -116,7 +115,7 @@ public class DropsManager implements Listener {
                     }
                 }
             }
-        }.runTaskTimer(LuckyCore.INSTANCE, 0, 1);
+        }.runTaskTimer(GameAPI.GAME_PROVIDER, 0, 1);
     }
 
     @SuppressWarnings("deprecation")
@@ -223,7 +222,7 @@ public class DropsManager implements Listener {
         if (!validChunk(world, x - off, y - off, z - off, x + off, y + off, z + off))
             return;
 
-        Bukkit.getServer().getScheduler().runTask(LuckyCore.INSTANCE, new Runnable() {
+        Bukkit.getServer().getScheduler().runTask(GameAPI.GAME_PROVIDER, new Runnable() {
             public void run() {
                 for (int offX = -range; offX <= range; offX++)
                     for (int offY = -range; offY <= range; offY++)

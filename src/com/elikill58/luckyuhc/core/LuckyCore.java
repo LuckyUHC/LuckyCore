@@ -1,5 +1,7 @@
 package com.elikill58.luckyuhc.core;
 
+import static com.elikill58.api.game.GameAPI.GAME_PROVIDER;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,6 +17,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -26,7 +29,6 @@ import com.elikill58.api.Messages;
 import com.elikill58.api.PlayerData;
 import com.elikill58.api.game.Game;
 import com.elikill58.api.game.GameAPI;
-import com.elikill58.api.game.GameProvider;
 import com.elikill58.api.game.phase.Phase;
 import com.elikill58.api.utils.PacketUtils;
 import com.elikill58.api.utils.Utils;
@@ -45,31 +47,30 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 
 @SuppressWarnings("deprecation")
-public class LuckyCore extends GameProvider {
+public class LuckyCore {
 
 	public static Game<?> game;
-	public static GameValue properties = new GameValue();
+	public static LuckyUHCProperties properties = new LuckyUHCProperties();
 	public static LuckyCore INSTANCE;
-	public static Phase lobbyPhase, FIGHT;
+	public static Phase FIGHT;
 	public static HashMap<Player, Integer> FOUND = new HashMap<>();
 	public static final List<Location> FARMING_LOCS = new ArrayList<>(), FIGHT_LOCS = new ArrayList<>();
 
-	private BukkitTask loadingTask = null;
+	private static BukkitTask loadingTask = null;
 	
-	private int getIdOfBiomeBase(String name) throws Exception {
+	private static int getIdOfBiomeBase(String name) throws Exception {
 		Object biomeBaseEnum = getBiomeBase(name);
 		return biomeBaseEnum.getClass().getDeclaredField("id").getInt(biomeBaseEnum);
 	}
 	
-	private Object getBiomeBase(String name) throws Exception {
+	private static Object getBiomeBase(String name) throws Exception {
 		Class<?> biomeBaseClass = PacketUtils.getNmsClass("BiomeBase");
 		return biomeBaseClass.getDeclaredField(name).get(biomeBaseClass);
 	}
 	
-	@Override
-	public void onLoad() {
+	public static void onLoad() {
 		try {
-			File worldContainer = getServer().getWorldContainer();
+			File worldContainer = Bukkit.getServer().getWorldContainer();
 			LuckyUtils.deleteWorld(new File(worldContainer, "world"));
 			LuckyUtils.deleteWorld(new File(worldContainer, "world_nether"));
 			LuckyUtils.deleteWorld(new File(worldContainer, "world_the_end"));
@@ -85,33 +86,31 @@ public class LuckyCore extends GameProvider {
 			biomes[getIdOfBiomeBase("ICE_PLAINS")] = getBiomeBase("PLAINS");
 			biomesField.setAccessible(true);
 			biomesField.set(null, biomes);
-			getLogger().info("Chunk modifié avec succés.");
+			GAME_PROVIDER.getLogger().info("Chunk modifié avec succés.");
 		} catch (Exception ignore) {}
 	}
 	
-	@Override
-	public void onEnable() {
-		INSTANCE = this;
+	public static void onEnable() {
 		properties.maxPlayers(20).maxSpecs(20);
-		getDataFolder().mkdirs();
-		try (InputStream in = getResource("Lobby.schematic");
-				OutputStream out = new FileOutputStream(new File(getDataFolder(), "hub.schematic"))) {
+		GAME_PROVIDER.getDataFolder().mkdirs();
+		try (InputStream in = GAME_PROVIDER.getResource("Lobby.schematic");
+				OutputStream out = new FileOutputStream(new File(GAME_PROVIDER.getDataFolder(), "hub.schematic"))) {
 			ByteStreams.copy(in, out);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		loadingTask = Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
+		loadingTask = Bukkit.getScheduler().runTaskTimer(GAME_PROVIDER, new Runnable() {
 			@Override
 			public void run() {
 				World w = LuckyCore.getWorld();
 				if(w != null) {
-					Bukkit.getScheduler().runTaskLater(INSTANCE, new Runnable() {
+					Bukkit.getScheduler().runTaskLater(GAME_PROVIDER, new Runnable() {
 						@Override
 						public void run() {
 							try {
 								EditSession es = new EditSession(new BukkitWorld(w), 999999999);
 								CuboidClipboard cc = CuboidClipboard
-										.loadSchematic(new File(LuckyCore.INSTANCE.getDataFolder(), "hub.schematic"));
+										.loadSchematic(new File(GAME_PROVIDER.getDataFolder(), "hub.schematic"));
 								cc.paste(es, new Vector(0, 140, 0), false);
 							} catch (Exception exc) {
 								exc.printStackTrace();
@@ -123,33 +122,34 @@ public class LuckyCore extends GameProvider {
 					w.getWorldBorder().setSize(2000);
 					LuckyCore.loadLocations();
 					LuckyUtils.genLocAround(new Location(w, 0, 100, 0));
-					GenerationManager.INT_ADDED.forEach((m, i) -> {
-						LuckyCore.INSTANCE.getLogger().info("[GENERATOR] setting > " + i + " " + m.name());
-					});
+					/*GenerationManager.INT_ADDED.forEach((m, i) -> {
+						GAME_PROVIDER.getLogger().info("[GENERATOR] setting > " + i + " " + m.name());
+					});*/
 					loadingTask.cancel();
 				}
 			}
 		}, 1, 1);
 		PluginManager pm = Bukkit.getPluginManager();
-		pm.registerEvents(new GenerationManager(), this);
-		pm.registerEvents(new GenerationBlocksManager(), this);
-		pm.registerEvents(new CraftManager(), this);
-		pm.registerEvents(new LootManager(), this);
-		pm.registerEvents(new ItemManager(), this);
-		pm.registerEvents(new OthersEvents(), this);
-		pm.registerEvents(new DropsManager(), this);
-		pm.registerEvents(new PickManager(), this);
+		pm.registerEvents(new GenerationManager(), GAME_PROVIDER);
+		pm.registerEvents(new GenerationBlocksManager(), GAME_PROVIDER);
+		pm.registerEvents(new CraftManager(), GAME_PROVIDER);
+		pm.registerEvents(new LootManager(), GAME_PROVIDER);
+		pm.registerEvents(new ItemManager(), GAME_PROVIDER);
+		pm.registerEvents(new OthersEvents(), GAME_PROVIDER);
+		pm.registerEvents(new DropsManager(), GAME_PROVIDER);
+		pm.registerEvents(new PickManager(), GAME_PROVIDER);
 	}
 
 	public static void loadLocations() {
-		if (INSTANCE.getConfig().get("spawns.farming") != null) {
-			ConfigurationSection cs = INSTANCE.getConfig().getConfigurationSection("spawns.farming");
+		FileConfiguration config = GAME_PROVIDER.getConfig();
+		if (config.get("spawns.farming") != null) {
+			ConfigurationSection cs = config.getConfigurationSection("spawns.farming");
 			for (String key : cs.getKeys(false))
 				FARMING_LOCS.add(
 						new Location(getWorld(), cs.getDouble(key + ".x"), cs.getDouble(key + ".y"), cs.getDouble(key + ".z")));
 		}
-		if (INSTANCE.getConfig().get("spawns.fight") != null) {
-			ConfigurationSection cs = INSTANCE.getConfig().getConfigurationSection("spawns.fight");
+		if (config.get("spawns.fight") != null) {
+			ConfigurationSection cs = config.getConfigurationSection("spawns.fight");
 			for (String key : cs.getKeys(false))
 				FIGHT_LOCS.add(
 						new Location(getWorld(), cs.getDouble(key + ".x"), cs.getDouble(key + ".y"), cs.getDouble(key + ".z")));
@@ -165,7 +165,6 @@ public class LuckyCore extends GameProvider {
 	public static void configure(Game<?> gameClass, Phase lobbyPhase) {
 		(LuckyCore.game = gameClass).properties.canDrop(true).canModifyInventories(true)
 				.disableNaturalSpawning(false).disableFallDamages(true).pvp(false);
-		LuckyCore.lobbyPhase = lobbyPhase;
 	}
 
 	public static void end(List<Player> winner) {
@@ -190,7 +189,7 @@ public class LuckyCore extends GameProvider {
 			p.sendMessage("");
 			Messages.sendMessage(p, "game.end.split", "%prefix%", game.prefix());
 		}
-		Bukkit.getScheduler().runTaskLater(INSTANCE, new BukkitRunnable() {
+		Bukkit.getScheduler().runTaskLater(GAME_PROVIDER, new BukkitRunnable() {
 			@Override
 			public void run() {
 				for (Player p : Bukkit.getOnlinePlayers())
@@ -296,10 +295,5 @@ public class LuckyCore extends GameProvider {
 				break;
 			}
 		}
-	}
-
-	@Override
-	public Game<?> getGame() {
-		return game;
 	}
 }
