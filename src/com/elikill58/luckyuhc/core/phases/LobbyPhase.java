@@ -9,14 +9,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 
+import com.elikill58.api.PlayerData;
+import com.elikill58.api.game.GameAPI;
+import com.elikill58.api.game.phase.Phase;
+import com.elikill58.api.scoreboard.ObjectiveSign;
 import com.elikill58.luckyuhc.core.LuckyCore;
 
-import fr.zonefun.api.spigot.SpigotPlayerData;
-import fr.zonefun.gameapi.GameAPI;
-import fr.zonefun.gameapi.PhaseEvent;
-import fr.zonefun.gameapi.PhaseTimer;
-
-public class LobbyPhase {
+@SuppressWarnings("deprecated")
+public class LobbyPhase extends Phase {
 
 	public static PhaseTimer timer = PhaseTimer.builder()
 			.phase(LuckyCore.game.startingPhase())
@@ -26,15 +26,18 @@ public class LobbyPhase {
 			.actionbarReminder(1, "starting.start_in_one")
 			.actionbarReminder(0, "starting.start")
 			.build();
+	
+	public LobbyPhase() {
+		super("lobby", "Lobby", true, true);
+	}
 
-	@PhaseEvent.Annotation(PhaseEvent.JOIN)
-	public static void onJoin(PlayerJoinEvent event) {
+	@Override
+	public void onJoin(PlayerJoinEvent event) {
 		event.setJoinMessage("");
 		
 		Player player = event.getPlayer();
-		SpigotPlayerData playerData = SpigotPlayerData.getSpigotPlayerData(player);
+		PlayerData playerData = PlayerData.getPlayerData(player);
 		GameAPI.broadcast("join_message",
-                "%grade%", playerData.getDisplayRank(),
                 "%playername%", player.getName(),
                 "%playercount%", String.valueOf(Bukkit.getOnlinePlayers().size()),
                 "%max%", String.valueOf(LuckyCore.properties.maxPlayers));
@@ -53,14 +56,13 @@ public class LobbyPhase {
 			player.removePotionEffect(effect.getType());
 	}
 
-	@PhaseEvent.Annotation(PhaseEvent.LEAVE)
-	public static void onLeft(PlayerQuitEvent event) {
+	@Override
+	public void onLeft(PlayerQuitEvent event) {
 		event.setQuitMessage("");
 		
 		Player player = event.getPlayer();
-		SpigotPlayerData playerData = SpigotPlayerData.getSpigotPlayerData(player);
+		PlayerData playerData = PlayerData.getPlayerData(player);
         GameAPI.broadcast("leave_message",
-                "%grade%", playerData.getDisplayRank(),
                 "%playername%", player.getName(),
                 "%playercount%", String.valueOf(Bukkit.getOnlinePlayers().size() - 1),
                 "%max%", String.valueOf(LuckyCore.properties.maxPlayers));
@@ -77,9 +79,14 @@ public class LobbyPhase {
 		if (Bukkit.getOnlinePlayers().size() - 1 < LuckyCore.properties.minPlayers && timer.isRunning())
 			timer.cancel();
 	}
-	
-	@PhaseEvent.Annotation(PhaseEvent.END)
-	public static void onEnd() {
+
+	@Override
+	public void onEnd() {
 		timer.cancel();
+	}
+
+	@Override
+	public void setScoreboardLines(Player p, ObjectiveSign sign) {
+		
 	}
 }

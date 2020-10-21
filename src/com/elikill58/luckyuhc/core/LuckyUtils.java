@@ -9,45 +9,41 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import com.elikill58.api.utils.PacketUtils;
+import com.elikill58.api.utils.Utils;
 import com.elikill58.luckyuhc.core.listeners.OthersEvents;
-
-import fr.zonefun.api.spigot.APIUtils;
-import fr.zonefun.api.spigot.builders.ItemStackBuilder;
-import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand;
-import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand.EnumClientCommand;
 
 public class LuckyUtils {
 	
 	public static ItemStack createItem(Material m, String name, int quantite, String... lore){
-		return new ItemStackBuilder(m, quantite).displayName(name).lore(lore).build();
+		return null;
 	}
 
 	public static ItemStack createItem(Material m, String name){
-		return new ItemStackBuilder(m).displayName(name).build();
+		return null;
 	}
 
 	public static ItemStack createItem(Material m, String name, int quantite, byte byt, String... lore){
-		return new ItemStackBuilder(m, quantite, byt).displayName(name).lore(lore).build();
+		return null;
 	}
 	
 	public static ItemStack createItem(Material m, String name, int quantite, Enchantment enchant, int lvl, String... lore){
-		return new ItemStackBuilder(m, quantite).displayName(name).lore(lore).unsafeEnchant(enchant, lvl).build();
+		return null;
 	}
 
 	public static ItemStack createSkull(String name, int amount, String owner, String... lore) {
 		ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 		SkullMeta skullmeta = (SkullMeta) skull.getItemMeta();
-		skullmeta.setDisplayName(APIUtils.applyColorCodes(name));
+		skullmeta.setDisplayName(Utils.applyColorCodes(name));
 		skullmeta.setOwner(owner);
 		List<String> lorel = new ArrayList<>();
 		for(String s : lore)
-			lorel.add(APIUtils.applyColorCodes(s));
+			lorel.add(Utils.applyColorCodes(s));
 		skullmeta.setLore(lorel);
 		skull.setItemMeta(skullmeta);
 		return skull;
@@ -80,12 +76,20 @@ public class LuckyUtils {
 		OthersEvents.CONTENT.put(player.getName() + "-content", player.getInventory().getContents());
 		OthersEvents.CONTENT.put(player.getName() + "-armorcontent", player.getInventory().getArmorContents());
         Bukkit.getScheduler().runTaskLater(LuckyCore.INSTANCE, () -> {
-            PacketPlayInClientCommand paquet = new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN);
-            ((CraftPlayer) player).getHandle().playerConnection.a(paquet);
+        	try {
+	        	Class<?> packetClass = PacketUtils.getNmsClass("PacketPlayInClientCommand");
+	        	Class<?> enumClientClass = packetClass.getDeclaredClasses()[0];
+	        	
+	        	Object packet = packetClass.getConstructor(enumClientClass).newInstance(enumClientClass.getDeclaredField("PERFORM_RESPAWN").get(null));
+	        	Object playerConnection = PacketUtils.getPlayerConnection(player);
+	        	playerConnection.getClass().getMethod("a", packetClass).invoke(playerConnection, packet);
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}
             player.setGameMode(GameMode.SPECTATOR);
             if (LuckyUtils.getSpectator().size() > LuckyCore.properties.maxSpecs) {
             	player.sendMessage("Nombre maximum de joueur atteint !");
-                APIUtils.tpToServer(player, "Lobby");
+                Utils.tpToServer(player, "Lobby");
             }
         }, 5L);
     }

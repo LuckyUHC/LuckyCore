@@ -29,6 +29,7 @@ import com.elikill58.api.game.Game;
 import com.elikill58.api.game.GameAPI;
 import com.elikill58.api.game.GameProvider;
 import com.elikill58.api.game.phase.Phase;
+import com.elikill58.api.utils.PacketUtils;
 import com.elikill58.api.utils.Utils;
 import com.elikill58.luckyuhc.core.listeners.CraftManager;
 import com.elikill58.luckyuhc.core.listeners.DropsManager;
@@ -43,8 +44,6 @@ import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 
-import net.minecraft.server.v1_8_R3.BiomeBase;
-
 @SuppressWarnings("deprecation")
 public class LuckyCore extends GameProvider {
 
@@ -57,6 +56,16 @@ public class LuckyCore extends GameProvider {
 
 	private BukkitTask loadingTask = null;
 	
+	private int getIdOfBiomeBase(String name) throws Exception {
+		Object biomeBaseEnum = getBiomeBase(name);
+		return biomeBaseEnum.getClass().getDeclaredField("id").getInt(biomeBaseEnum);
+	}
+	
+	private Object getBiomeBase(String name) throws Exception {
+		Class<?> biomeBaseClass = PacketUtils.getNmsClass("BiomeBase");
+		return biomeBaseClass.getDeclaredField(name).get(biomeBaseClass);
+	}
+	
 	@Override
 	public void onLoad() {
 		try {
@@ -65,19 +74,18 @@ public class LuckyCore extends GameProvider {
 			LuckyUtils.deleteWorld(new File(worldContainer, "world_nether"));
 			LuckyUtils.deleteWorld(new File(worldContainer, "world_the_end"));
 			
-			Field biomesField = BiomeBase.class.getDeclaredField("biomes");
+			Class<?> biomeBaseClass = PacketUtils.getNmsClass("BiomeBase");
+			Field biomesField = biomeBaseClass.getDeclaredField("biomes");
 
 			biomesField.setAccessible(true);
-			if (biomesField.get(null) instanceof BiomeBase[]) {
-				BiomeBase[] biomes = (BiomeBase[]) biomesField.get(null);
-				biomes[BiomeBase.DEEP_OCEAN.id] = BiomeBase.PLAINS;
-				biomes[BiomeBase.OCEAN.id] = BiomeBase.FOREST;
-				biomes[BiomeBase.ICE_MOUNTAINS.id] = BiomeBase.JUNGLE;
-				biomes[BiomeBase.ICE_PLAINS.id] = BiomeBase.PLAINS;
-				biomesField.setAccessible(true);
-				biomesField.set(null, biomes);
-				getLogger().info("Chunk modifié avec succés.");
-			}
+			Object[] biomes = (Object[]) biomesField.get(null);
+			biomes[getIdOfBiomeBase("DEEP_OCEAN")] = getBiomeBase("PLAINS");
+			biomes[getIdOfBiomeBase("OCEAN")] = getBiomeBase("FOREST");
+			biomes[getIdOfBiomeBase("ICE_MOUNTAINS")] = getBiomeBase("JUNGLE");
+			biomes[getIdOfBiomeBase("ICE_PLAINS")] = getBiomeBase("PLAINS");
+			biomesField.setAccessible(true);
+			biomesField.set(null, biomes);
+			getLogger().info("Chunk modifié avec succés.");
 		} catch (Exception ignore) {}
 	}
 	

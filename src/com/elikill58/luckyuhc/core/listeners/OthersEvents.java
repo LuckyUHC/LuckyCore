@@ -16,12 +16,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.elikill58.api.PlayerData;
+import com.elikill58.api.game.GameAPI;
 import com.elikill58.luckyuhc.core.LuckyCore;
 import com.elikill58.luckyuhc.core.phases.LobbyPhase;
-
-import fr.zonefun.api.spigot.SpigotPlayerData;
-import fr.zonefun.api.universal.Rank;
-import fr.zonefun.gameapi.GameAPI;
 
 public class OthersEvents implements Listener {
 
@@ -30,13 +28,13 @@ public class OthersEvents implements Listener {
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
 		Player p = e.getPlayer();
-		if (e.getFrom().getY() < 120 && GameAPI.ACTIVE_PHASE.name.equalsIgnoreCase("lobby") && !p.getGameMode().equals(GameMode.CREATIVE))
+		if (e.getFrom().getY() < 120 && GameAPI.ACTIVE_PHASE.id.equalsIgnoreCase("lobby") && !p.getGameMode().equals(GameMode.CREATIVE))
 			p.teleport(LuckyCore.properties.lobby.get(new Random().nextInt(LuckyCore.properties.lobby.size())));
 	}
 	
 	@EventHandler
 	public void onFoodLevelChange(FoodLevelChangeEvent e) {
-		if(GameAPI.ACTIVE_PHASE.name.equalsIgnoreCase("lobby"))
+		if(GameAPI.ACTIVE_PHASE.id.equalsIgnoreCase("lobby"))
 			e.setCancelled(true);
 	}
 
@@ -44,12 +42,12 @@ public class OthersEvents implements Listener {
 	public void onCmd(PlayerCommandPreprocessEvent e) {
 		String cmd = e.getMessage();
 		Player p = e.getPlayer();
-		SpigotPlayerData pi = SpigotPlayerData.getSpigotPlayerData(p);
-		if (!pi.hasPower(Rank.CELEBRITE))
+		PlayerData pi = PlayerData.getPlayerData(p);
+		if (!p.isOp())
 			return;
 		if(cmd.startsWith("/forcestart")) {
 			e.setCancelled(true);
-			if(GameAPI.ACTIVE_PHASE.name.equals("lobby") && !LobbyPhase.timer.isRunning()) {
+			if(GameAPI.ACTIVE_PHASE.id.equals("lobby") && !LobbyPhase.timer.isRunning()) {
 				LobbyPhase.timer.start();
 				p.sendMessage(LuckyCore.game.prefix() + ChatColor.GREEN + " Démarrage forcé.");
 			} else {

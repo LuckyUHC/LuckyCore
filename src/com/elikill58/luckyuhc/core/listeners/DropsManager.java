@@ -23,12 +23,11 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.elikill58.api.game.GameAPI;
 import com.elikill58.luckyblocks.LuckyBlocks;
 import com.elikill58.luckyuhc.core.LuckyCore;
 import com.elikill58.luckyuhc.core.LuckyUtils;
 import com.elikill58.luckyuhc.core.phases.FarmingPhase;
-
-import fr.zonefun.gameapi.GameAPI;
 
 public class DropsManager implements Listener {
 
@@ -64,7 +63,7 @@ public class DropsManager implements Listener {
             b.setType(Material.AIR);
 			LuckyCore.addLuckyblockFound(e.getPlayer());
 			LuckyBlocks.runRandomLuckyBlock(e, LuckyCore.properties.luck);
-		} else if (m.equals(Material.LOG) || m.equals(Material.LOG_2)) {
+		} else if (m.name().contains("LOG")) {
 			logDetele(e);
 		} else if(m.equals(Material.BOOKSHELF)) {
             if(DropsManager.LOC_BIBLIO.contains(b.getLocation())) {
@@ -86,7 +85,7 @@ public class DropsManager implements Listener {
             public void run() {
                 for (int i = 0; i < blist.size(); i++) {
                     Block b = blist.get(i);
-                    if (b.getType() == Material.LOG || b.getType() == Material.LOG_2) {
+                    if (b.getType().name().contains("LOG")) {
                         for (ItemStack item : b.getDrops())
                             b.getWorld().dropItemNaturally(b.getLocation(), item);
 
@@ -94,8 +93,7 @@ public class DropsManager implements Listener {
                         checkLeaves(b);
                     }
                     for (BlockFace face : BlockFace.values()) {
-                        if (b.getRelative(face).getType() == Material.LOG
-                                || b.getRelative(face).getType() == Material.LOG_2) {
+                        if (b.getRelative(face).getType().name().contains("LOG")) {
                             blist.add(b.getRelative(face));
                         }
                     }
@@ -145,13 +143,13 @@ public class DropsManager implements Listener {
                 for (offY = -range; offY <= range; offY++) {
                     for (offZ = -range; offZ <= range; offZ++) {
                         Material mat = world.getBlockAt(x + offX, y + offY, z + offZ).getType();
-                        if ((mat == Material.LEAVES || mat == Material.LEAVES_2))
+                        if (mat.name().contains("LEAVES"))
                             type = Material.LEAVES.getId();
-                        else if ((mat == Material.LOG || mat == Material.LOG_2))
+                        else if (mat.name().contains("LOG"))
                             type = Material.LOG.getId();
                         blocks[(offX + div) * mul + (offY + div) * max + offZ
-                                + div] = ((mat == Material.LOG || mat == Material.LOG_2) ? 0
-                                : ((mat == Material.LEAVES || mat == Material.LEAVES_2) ? -2 : -1));
+                                + div] = ((mat.name().contains("LOG")) ? 0
+                                : ((mat.name().contains("LEAVES")) ? -2 : -1));
                     }
                 }
             }
@@ -228,8 +226,7 @@ public class DropsManager implements Listener {
                 for (int offX = -range; offX <= range; offX++)
                     for (int offY = -range; offY <= range; offY++)
                         for (int offZ = -range; offZ <= range; offZ++)
-                            if ((world.getBlockAt(x + offX, y + offY, z + offZ).getType() == Material.LEAVES
-                                    || world.getBlockAt(x + offX, y + offY, z + offZ).getType() == Material.LEAVES_2))
+                            if ((world.getBlockAt(x + offX, y + offY, z + offZ).getType().name().contains("LEAVES")))
                                 breakLeaf(world, x + offX, y + offY, z + offZ);
             }
         });
@@ -330,6 +327,7 @@ public class DropsManager implements Listener {
 			return this;
 		}
 		
+		@SuppressWarnings("deprecation")
 		public void applyEffect(BlockBreakEvent e) {
 			if(cancel) {
 				e.setCancelled(true);

@@ -13,7 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.generator.BlockPopulator;
 
-import com.elikill58.luckyblocks.LuckyBlocks;
+import com.elikill58.api.game.GameAPI;
 import com.elikill58.luckyuhc.core.LuckyCore;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
@@ -124,7 +124,7 @@ public class GenerationManager implements Listener {
 						//pl.getLogger().info("[GENERATOR] setting iron");
 					}
 					break;
-				case QUARTZ_ORE:
+				case NETHER_QUARTZ_ORE:
 					if (b.getType() == Material.STONE || b.getType() == Material.DIRT) {
 						b.setType(type, false);
 						//pl.getLogger().info("[GENERATOR] setting quartz");
@@ -163,7 +163,7 @@ public class GenerationManager implements Listener {
 				try {
 					EditSession es = new EditSession(new BukkitWorld(world), 999999999);
 					CuboidClipboard cc = CuboidClipboard
-							.loadSchematic(new File(LuckyBlocks.INSTANCE.getDataFolder() + "/hub.schematic"));
+							.loadSchematic(new File(GameAPI.GAME_PROVIDER.getDataFolder() + "/hub.schematic"));
 					cc.paste(es, new Vector(0, 140, 0), false);
 				} catch (Exception exc) {
 					exc.printStackTrace();
