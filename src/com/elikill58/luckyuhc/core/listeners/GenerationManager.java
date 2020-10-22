@@ -1,10 +1,10 @@
 package com.elikill58.luckyuhc.core.listeners;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -13,13 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.generator.BlockPopulator;
 
-import com.elikill58.api.game.GameAPI;
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.elikill58.luckyuhc.core.Generator;
 
-@SuppressWarnings("deprecation")
 public class GenerationManager implements Listener {
 
 	public static final HashMap<Material, Integer> INT_ADDED = new HashMap<>();
@@ -156,14 +151,15 @@ public class GenerationManager implements Listener {
 		public void populate(World world, Random random, Chunk chunk) {
 
 			if (chunk.getX() == 0 && chunk.getZ() == 0) {
-				try {
+				Generator.spawnSchematic(new Location(world, 0, 140, 0), "/hub.schematic");
+				/*try {
 					EditSession es = new EditSession(new BukkitWorld(world), 999999999);
 					CuboidClipboard cc = CuboidClipboard
 							.loadSchematic(new File(GameAPI.GAME_PROVIDER.getDataFolder() + "/hub.schematic"));
 					cc.paste(es, new Vector(0, 140, 0), false);
 				} catch (Exception exc) {
 					exc.printStackTrace();
-				}
+				}*/
 				/*try {
 					InputStream is = pl.getClass().getClassLoader().getResourceAsStream(SchematicName);
 					SchematicsManager man = new SchematicsManager();

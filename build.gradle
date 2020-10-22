@@ -43,8 +43,8 @@ dependencies {
     compile("com.github.luckyuhc:luckyblocks:master-SNAPSHOT") { transitive = false }
     compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
-    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.1.4-SNAPSHOT'
-    compileOnly 'com.sk89q.worldedit:worldedit-core:6.1.4-SNAPSHOT'
+    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.0.0-SNAPSHOT'
+    compileOnly 'com.sk89q.worldedit:worldedit-core:7.0.0-SNAPSHOT'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8

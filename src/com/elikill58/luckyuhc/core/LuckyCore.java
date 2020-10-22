@@ -41,10 +41,6 @@ import com.elikill58.luckyuhc.core.listeners.LootManager;
 import com.elikill58.luckyuhc.core.listeners.OthersEvents;
 import com.elikill58.luckyuhc.core.listeners.PickManager;
 import com.google.common.io.ByteStreams;
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
 
 @SuppressWarnings("deprecation")
 public class LuckyCore {
@@ -106,14 +102,15 @@ public class LuckyCore {
 					Bukkit.getScheduler().runTaskLater(GAME_PROVIDER, new Runnable() {
 						@Override
 						public void run() {
-							try {
+							Generator.spawnSchematic(new Location(w, 0, 140, 0), "/hub.schematic");
+							/*try {
 								EditSession es = new EditSession(new BukkitWorld(w), 999999999);
 								CuboidClipboard cc = CuboidClipboard
 										.loadSchematic(new File(GAME_PROVIDER.getDataFolder(), "hub.schematic"));
 								cc.paste(es, new Vector(0, 140, 0), false);
 							} catch (Exception exc) {
 								exc.printStackTrace();
-							}
+							}*/
 						}
 					}, 20);
 					w.setGameRuleValue("naturalRegeneration", "false");
