@@ -13,7 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.generator.BlockPopulator;
 
-import com.elikill58.luckyuhc.core.Generator;
+import com.elikill58.luckyuhc.core.generator.Generator;
 
 public class GenerationManager implements Listener {
 
@@ -151,7 +151,7 @@ public class GenerationManager implements Listener {
 		public void populate(World world, Random random, Chunk chunk) {
 
 			if (chunk.getX() == 0 && chunk.getZ() == 0) {
-				Generator.spawnSchematic(new Location(world, 0, 140, 0), "/hub.schematic");
+				Generator.getGenerator().spawnSchematic(new Location(world, 0, 140, 0), "/hub.schematic");
 				/*try {
 					EditSession es = new EditSession(new BukkitWorld(world), 999999999);
 					CuboidClipboard cc = CuboidClipboard

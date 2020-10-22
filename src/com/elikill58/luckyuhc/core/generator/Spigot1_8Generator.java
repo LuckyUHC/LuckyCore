@@ -1,4 +1,4 @@
-package com.elikill58.luckyuhc.core;
+package com.elikill58.luckyuhc.core.generator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,21 +9,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com.elikill58.api.Version;
 import com.elikill58.api.game.GameAPI;
 import com.elikill58.api.utils.PacketUtils;
 
-@SuppressWarnings("deprecation")
-public class Generator {
+public class Spigot1_8Generator implements Generator {
 
-	public static void spawnSchematic(Location loc, String filename) {
-		if(Version.getVersion().isNewerOrEquals(Version.V1_13))
-			spawnSchematic1_13(loc, filename);
-		else
-			spawnSchematic1_8(loc, filename);
-	}
-	
-	public static void spawnSchematic1_8(Location loc, String filename) {
+	@SuppressWarnings("deprecation")
+	@Override
+	public void spawnSchematic(Location loc, String filename) {
         try {
             FileInputStream fis = new FileInputStream(new File(GameAPI.GAME_PROVIDER.getDataFolder(), filename));
             Object nbtData = PacketUtils.getNmsClass("NBTCompressedStreamTools").getMethod("a", InputStream.class).invoke(null, fis);
@@ -61,10 +54,6 @@ public class Generator {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-	
-	public static void spawnSchematic1_13(Location loc, String filename) {
-		// TODO fix for 1.13
-		spawnSchematic1_8(loc, filename);
 	}
+
 }

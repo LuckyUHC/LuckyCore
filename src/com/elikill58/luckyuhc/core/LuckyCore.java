@@ -32,6 +32,7 @@ import com.elikill58.api.game.GameAPI;
 import com.elikill58.api.game.phase.Phase;
 import com.elikill58.api.utils.PacketUtils;
 import com.elikill58.api.utils.Utils;
+import com.elikill58.luckyuhc.core.generator.Generator;
 import com.elikill58.luckyuhc.core.listeners.CraftManager;
 import com.elikill58.luckyuhc.core.listeners.DropsManager;
 import com.elikill58.luckyuhc.core.listeners.GenerationBlocksManager;
@@ -45,6 +46,7 @@ import com.google.common.io.ByteStreams;
 @SuppressWarnings("deprecation")
 public class LuckyCore {
 
+	public static Generator generator;
 	public static LuckyUHCProperties properties = new LuckyUHCProperties();
 	public static HashMap<Player, Integer> FOUND = new HashMap<>();
 	public static final List<Location> FARMING_LOCS = new ArrayList<>(), FIGHT_LOCS = new ArrayList<>();
@@ -102,7 +104,7 @@ public class LuckyCore {
 					Bukkit.getScheduler().runTaskLater(GAME_PROVIDER, new Runnable() {
 						@Override
 						public void run() {
-							Generator.spawnSchematic(new Location(w, 0, 140, 0), "/hub.schematic");
+							Generator.getGenerator().spawnSchematic(new Location(w, 0, 140, 0), "/hub.schematic");
 							/*try {
 								EditSession es = new EditSession(new BukkitWorld(w), 999999999);
 								CuboidClipboard cc = CuboidClipboard
