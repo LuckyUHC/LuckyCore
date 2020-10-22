@@ -26,9 +26,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.elikill58.api.Materials;
 import com.elikill58.api.game.GameAPI;
 import com.elikill58.api.utils.ItemUtils;
-import com.elikill58.luckyblocks.LuckyBlocks;
 import com.elikill58.luckyuhc.core.LuckyCore;
 import com.elikill58.luckyuhc.core.LuckyUtils;
+import com.elikill58.luckyuhc.luckyblocks.LuckyBlocks;
 
 public class DropsManager implements Listener {
 
