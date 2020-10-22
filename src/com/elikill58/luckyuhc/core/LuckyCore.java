@@ -32,6 +32,7 @@ import com.elikill58.api.game.GameAPI;
 import com.elikill58.api.game.phase.Phase;
 import com.elikill58.api.utils.PacketUtils;
 import com.elikill58.api.utils.Utils;
+import com.elikill58.luckyblocks.LuckyBlocks;
 import com.elikill58.luckyuhc.core.generator.Generator;
 import com.elikill58.luckyuhc.core.listeners.CraftManager;
 import com.elikill58.luckyuhc.core.listeners.DropsManager;
@@ -136,6 +137,8 @@ public class LuckyCore {
 		pm.registerEvents(new OthersEvents(), GAME_PROVIDER);
 		pm.registerEvents(new DropsManager(), GAME_PROVIDER);
 		pm.registerEvents(new PickManager(), GAME_PROVIDER);
+		
+		LuckyBlocks.init();
 	}
 
 	public static void loadLocations() {
