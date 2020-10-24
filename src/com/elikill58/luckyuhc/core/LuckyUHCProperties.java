@@ -101,4 +101,9 @@ public class LuckyUHCProperties extends GameProperties {
 		this.winCoins = b;
 		return this;
 	}
+	
+	public LuckyUHCProperties defaultKnockback(boolean defaultKnockback) {
+		this.defaultKnockback = defaultKnockback;
+		return this;
+	}
 }
