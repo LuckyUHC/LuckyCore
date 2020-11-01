@@ -215,8 +215,9 @@ public class LuckyCore {
 	}
 
 	public static void deletelobby() {
-		Location lobbyloc = new Location(getWorld(), 0, 130, 0);
-		Location lobbyloc2 = new Location(getWorld(), 40, 250, 40);
+		World w = getWorld();
+		Location lobbyloc = new Location(w, 0, 130, 0);
+		Location lobbyloc2 = new Location(w, 40, 250, 40);
 
 		int minX = Math.min(lobbyloc.getBlockX(), lobbyloc2.getBlockX());
 		int minY = Math.min(lobbyloc.getBlockY(), lobbyloc2.getBlockY());
@@ -229,7 +230,7 @@ public class LuckyCore {
 		for (int x = minX; x <= maxX; x++)
 			for (int y = minY; y <= maxY; y++)
 				for (int z = minZ; z <= maxZ; z++)
-					getWorld().getBlockAt(x, y, z).setType(Material.AIR);
+					w.getBlockAt(x, y, z).setType(Material.AIR);
 	}
 
 	/*public static void pregenerate() {
