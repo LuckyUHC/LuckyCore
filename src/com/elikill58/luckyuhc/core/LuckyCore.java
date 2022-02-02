@@ -22,7 +22,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.elikill58.api.Messages;
@@ -44,7 +43,6 @@ import com.elikill58.luckyuhc.core.listeners.PickManager;
 import com.elikill58.luckyuhc.luckyblocks.LuckyBlocks;
 import com.google.common.io.ByteStreams;
 
-@SuppressWarnings("deprecation")
 public class LuckyCore {
 
 	public static Generator generator;
@@ -86,7 +84,7 @@ public class LuckyCore {
 		} catch (Exception ignore) {}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "deprecation"})
 	public static void onEnable() {
 		((Game<LuckyUHCProperties>) GameAPI.ACTIVE_GAME).properties = properties;
 		properties.maxPlayers(20).maxSpecs(20);
@@ -190,28 +188,19 @@ public class LuckyCore {
 			p.sendMessage("");
 			Messages.sendMessage(p, "game.end.split", "%prefix%", GameAPI.ACTIVE_GAME.prefix());
 		}
-		Bukkit.getScheduler().runTaskLater(GAME_PROVIDER, new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (Player p : Bukkit.getOnlinePlayers())
-					Utils.tpToServer(p, "LOBBY");
-				Bukkit.shutdown();
-			}
+		Bukkit.getScheduler().runTaskLater(GAME_PROVIDER, () -> {
+			for (Player p : Bukkit.getOnlinePlayers())
+				Utils.tpToServer(p, "LOBBY");
+			Bukkit.shutdown();
 		}, 100);
 	}
 
 	public static int getLuckyblockFound(Player p) {
-		if (FOUND.containsKey(p))
-			return FOUND.get(p);
-		else
-			return 0;
+		return FOUND.getOrDefault(p, 0);
 	}
 
 	public static void addLuckyblockFound(Player p) {
-		if (FOUND.containsKey(p))
-			FOUND.put(p, FOUND.get(p) + 1);
-		else
-			FOUND.put(p, 1);
+		FOUND.put(p, FOUND.getOrDefault(p, 0) + 1);
 	}
 
 	public static void deletelobby() {
