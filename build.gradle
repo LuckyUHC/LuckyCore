@@ -1,22 +1,19 @@
-group 'com.elikill58'
-version '1.0-BETA'
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven {
-            name = 'gradle-plugins'
-            url = 'https://plugins.gradle.org/m2'
-        }
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
-    }
+plugins {
+    id 'java-library'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
-apply plugin: 'java'
-apply plugin: 'com.github.johnrengelman.shadow'
+group 'com.elikill58'
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        name = 'gradle-plugins'
+        url = 'https://plugins.gradle.org/m2'
+    }
+}
 
 
 repositories {
@@ -34,13 +31,13 @@ repositories {
     	url = 'https://jitpack.io/'
     }
     maven {
-    	url = "http://maven.enginehub.org/repo/"
+    	url = "https://maven.enginehub.org/repo/"
     }
 }
 
 dependencies {
-    compile("com.github.Elikill58:GameAPI:master-SNAPSHOT") { transitive = false }
-    compile("com.github.luckyuhc:luckyblocks:master-SNAPSHOT") { transitive = false }
+    implementation 'com.github.Elikill58:GameAPI:master-SNAPSHOT'
+    implementation 'com.github.LuckyUHC:LuckyBlocks:master-SNAPSHOT'
     compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.1.4-SNAPSHOT'
