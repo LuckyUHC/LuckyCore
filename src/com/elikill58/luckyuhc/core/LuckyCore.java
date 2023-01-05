@@ -84,7 +84,7 @@ public class LuckyCore {
 		} catch (Exception ignore) {}
 	}
 	
-	@SuppressWarnings({"unchecked", "deprecation"})
+	@SuppressWarnings("deprecation")
 	public static void onEnable() {
 		((Game<LuckyUHCProperties>) GameAPI.ACTIVE_GAME).properties = properties;
 		properties.maxPlayers(20).maxSpecs(20);
